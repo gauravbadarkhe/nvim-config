@@ -1,0 +1,13 @@
+return {
+  "mfussenegger/nvim-dap",
+  config = function ()
+    local dap = require("dap")
+
+    dap.adapters["pwa-node"]={
+      type:"server",
+      host:"127.0.0.1",
+port:8123
+    }
+  end
+
+}
