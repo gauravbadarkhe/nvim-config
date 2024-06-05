@@ -41,8 +41,13 @@ return {
         custom = { ".DS_Store" },
       },
       git = {
+        enable = false,
         timeout = 5000,
         ignore = false,
+      },
+      -- New watcher option to disable
+      filesystem_watchers = {
+        enable = false,
       },
     })
 
