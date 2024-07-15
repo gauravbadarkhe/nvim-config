@@ -9,11 +9,11 @@ return {
   config = function()
     local telescope = require("telescope")
     local actions = require("telescope.actions")
+    local action_state = require("telescope.actions.state")
 
     telescope.setup({
       defaults = {
         file_ignore_patterns = {
-
           "%.swp$", -- Vim swap files
           "%.un~$", -- Vim backup files
           "~$", -- Backup files
@@ -41,12 +41,26 @@ return {
           "%.ico$", -- Icon files
           "%.lock$", -- Lock files
         },
+        pickers = {
+          find_files = {
+            -- This ensures .env files are not ignored specifically in find_files picker
+            find_command = { "rg", "--files", "--hidden", "--glob", "!.env" },
+          },
+        },
         path_display = { "smart" },
         mappings = {
           i = {
             ["<C-k>"] = actions.move_selection_previous, -- move to prev result
             ["<C-j>"] = actions.move_selection_next, -- move to next result
             ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+            ["<C-x>"] = actions.select_horizontal, -- open in horizontal split
+            ["<C-v>"] = actions.select_vertical, -- open in vertical split
+            ["<C-t>"] = actions.select_tab, -- open in new tab
+          },
+          n = {
+            ["<C-x>"] = actions.select_horizontal, -- open in horizontal split
+            ["<C-v>"] = actions.select_vertical, -- open in vertical split
+            ["<C-t>"] = actions.select_tab, -- open in new tab
           },
         },
       },

@@ -14,6 +14,10 @@ return {
       highlight = {
         enable = true,
       },
+
+      sync_install = false,
+
+      auto_install = true,
       -- enable indentation
       indent = { enable = true },
       -- enable autotagging (w/ nvim-ts-autotag plugin)
@@ -22,6 +26,7 @@ return {
       },
       -- ensure these language parsers are installed
       ensure_installed = {
+
         "json",
         "javascript",
         "typescript",

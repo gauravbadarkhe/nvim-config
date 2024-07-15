@@ -3,7 +3,6 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
     local lualine = require("lualine")
-    local lazy_status = require("lazy.status") -- to configure lazy pending updates count
 
     local colors = {
       blue = "#65D1FF",
@@ -52,20 +51,32 @@ return {
     -- configure lualine with modified theme
     lualine.setup({
       options = {
-        theme = my_lualine_theme,
+        theme = "catppuccin-mocha",
+        globalstatus = true,
       },
       sections = {
+        lualine_a = { "mode" },
+        lualine_b = { "branch", "diff" },
+        lualine_c = {},
         lualine_x = {
-          {
-            lazy_status.updates,
-            cond = lazy_status.has_updates,
-            color = { fg = "#ff9e64" },
-          },
-          { "encoding" },
-          { "fileformat" },
-          { "filetype" },
+          { "diagnostics", sources = { "nvim_lsp" }, sections = { "hint" } },
         },
+        lualine_y = { "filename" },
+        lualine_z = { "location" },
       },
+      inactive_sections = {
+        lualine_a = {},
+        lualine_b = {},
+        lualine_c = { "filename" },
+        lualine_x = { "location" },
+        lualine_y = {},
+        lualine_z = {},
+      },
+      tabline = {
+        lualine_a = {},
+        lualine_x = { "tabs" },
+      },
+      extensions = { "nvim-tree" },
     })
   end,
 }
