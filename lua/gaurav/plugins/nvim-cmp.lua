@@ -44,13 +44,13 @@ return {
         ["<C-e>"] = cmp.mapping.abort(), -- close completion window
         ["<CR>"] = cmp.mapping.confirm({ select = false }),
 
-        ["<C-J>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_next_item()
-          else
-            vim.fn["copilot#Accept"]("")
-          end
-        end, { "i", "s" }),
+        -- ["<C-J>"] = cmp.mapping(function(fallback)
+        --   if cmp.visible() then
+        --     cmp.select_next_item()
+        --   else
+        --     vim.fn["copilot#Accept"]("")
+        --   end
+        -- end, { "i", "s" }),
       }),
       -- sources for autocompletion
       sources = cmp.config.sources({
