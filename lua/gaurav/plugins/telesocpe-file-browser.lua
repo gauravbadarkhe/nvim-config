@@ -38,7 +38,7 @@ return {
         file_previewer = require("telescope.previewers").vim_buffer_cat.new,
         grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
         qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
-        find_command = { "fd", "--type", "f", "--hidden", "--strip-cwd-prefix" }, -- Custom find_command using fd
+        -- find_command = { "fd", "--type", "f", "--hidden", "--strip-cwd-prefix" }, -- Custom find_command using fd
       },
       extensions = {
         file_browser = {
