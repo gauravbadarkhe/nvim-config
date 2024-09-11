@@ -1,9 +1,16 @@
 return {
   "nvim-telescope/telescope-file-browser.nvim",
-  dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+  dependencies = {
+    "nvim-telescope/telescope.nvim",
+    "nvim-lua/plenary.nvim",
+    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    "nvim-tree/nvim-web-devicons",
+  },
   config = function()
     -- Load telescope and its extensions
     local telescope = require("telescope")
+    local actions = require("telescope.actions")
+
     local fb_actions = require("telescope").extensions.file_browser.actions
 
     telescope.setup({
@@ -41,6 +48,13 @@ return {
         -- find_command = { "fd", "--type", "f", "--hidden", "--strip-cwd-prefix" }, -- Custom find_command using fd
       },
       extensions = {
+        fzf = {
+          fuzzy = true,
+          override_generic_sorter = true,
+          override_file_sorter = true,
+          case_mode = "smart_case",
+        },
+
         file_browser = {
           hijack_netrw = true,
           hidden = true, -- Show hidden files in the file browser
@@ -48,16 +62,40 @@ return {
             ["i"] = {
               ["<C-h>"] = fb_actions.goto_parent_dir,
               ["<C-l>"] = fb_actions.change_cwd,
+              ["<C-n>"] = fb_actions.create, -- create new file
+              ["<C-e>"] = fb_actions.rename, -- rename file
             },
             ["n"] = {
               ["<C-h>"] = fb_actions.goto_parent_dir,
               ["<C-l>"] = fb_actions.change_cwd,
+              ["<C-n>"] = fb_actions.create, -- create new file
+              ["<C-e>"] = fb_actions.rename, -- rename file
             },
           },
         },
       },
+      mappings = {
+        i = {
+          ["<C-k>"] = actions.move_selection_previous, -- move to prev result
+          ["<C-j>"] = actions.move_selection_next, -- move to next result
+          ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+          ["<C-x>"] = actions.select_horizontal, -- open in horizontal split
+          ["<C-v>"] = actions.select_vertical, -- open in vertical split
+          ["<C-t>"] = actions.select_tab, -- open in new tab
+          ["<C-n>"] = fb_actions.create, -- create new file
+          ["<C-e>"] = fb_actions.rename, -- rename file
+        },
+        n = {
+          ["<C-x>"] = actions.select_horizontal, -- open in horizontal split
+          ["<C-v>"] = actions.select_vertical, -- open in vertical split
+          ["<C-t>"] = actions.select_tab, -- open in new tab
+          ["<C-n>"] = fb_actions.create, -- create new file
+          ["<C-e>"] = fb_actions.rename, -- rename file
+        },
+      },
     })
     telescope.load_extension("file_browser")
+    telescope.load_extension("fzf")
 
     -- Set keymaps for Telescope commands
     local keymap = vim.keymap -- for conciseness
@@ -72,6 +110,11 @@ return {
       "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>",
       { desc = "Toggle file explorer on current file" }
     )
+    keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
+    keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
+    keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
+    keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
+    keymap.set("n", "<leader>fb", "<cmd>Telescope git_branches<cr>", { desc = "Switch Branches in current cwd" })
 
     -- Function to open Telescope file browser in a floating window
     local function open_telescope_file_browser()

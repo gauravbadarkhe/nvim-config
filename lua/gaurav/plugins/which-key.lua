@@ -7,7 +7,13 @@ return {
   end,
   opts = {
     -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
+    triggers_blacklist = {
+      n = { "<C-w>" }, -- Disable which-key popup for <C-w> in normal mode
+    },
+    -- Custom keybindings
+    setup = function()
+      -- Bind <C-A-w> to trigger which-key
+      vim.api.nvim_set_keymap("n", "<C-A-w>", ":WhichKey<CR>", { noremap = true, silent = true })
+    end,
   },
 }

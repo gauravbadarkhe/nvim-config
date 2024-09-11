@@ -24,6 +24,9 @@ return {
     vim.g.coq_settings = {
       auto_start = true, -- if you want to start COQ at startup
       -- Your COQ settings here
+      keymap = {
+        recommended = false, -- Disable COQ's default key mappings
+      },
     }
   end,
   config = function()
@@ -41,6 +44,14 @@ return {
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("UserLspConfig", {}),
       callback = function(ev)
+        -- Unmap COQ's <C-h> mapping
+        vim.api.nvim_del_keymap("n", "<C-H>")
+        vim.api.nvim_del_keymap("v", "<C-H>")
+
+        -- Remap <C-h> for window navigation
+        vim.api.nvim_set_keymap("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
+        vim.api.nvim_set_keymap("v", "<C-h>", "<C-w>h", { noremap = true, silent = true })
+
         -- Buffer local mappings.
         -- See `:help vim.lsp.*` for documentation on any of the below functions
         local opts = { buffer = ev.buf, silent = true }

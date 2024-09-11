@@ -9,9 +9,30 @@ keymap.set("i", "jk", "<esc>", { desc = "exist insert mode with jk" })
 
 keymap.set("n", "<leader>nh", ":nohl<cr>", { desc = "clear search  highlights" })
 
--- increment / decrement numbers
+vim.api.nvim_set_keymap("n", "<Space>lf", "<cmd>lua vim.lsp.buf.format()<CR>", { noremap = true, silent = true })
+
+-- Switch between panes
+
+-- Remap <C-h> for window navigation
+
+vim.api.nvim_set_keymap("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "<C-h>", "<C-w>h", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-j>", "<C-w>j", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-l>", "<C-w>l", { noremap = true, silent = true }) -- increment / decrement numbers
+
 keymap.set("n", "<leader>+", "<c-a>", { desc = "increment number" })
 keymap.set("n", "<leader>-", "<c-x>", { desc = "decrement number" })
+
+-- Use Tab to indent
+vim.api.nvim_set_keymap("v", "<Tab>", ">gv", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "<S-Tab>", "<gv", { noremap = true, silent = true })
+
+-- Use Tab for inserting spaces in insert mode
+vim.api.nvim_set_keymap("i", "<Tab>", "<C-t>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "<S-Tab>", "<C-d>", { noremap = true, silent = true })
 
 -- window management
 keymap.set("n", "<leader>sv", "<c-w>v", { desc = "split window vertically" })
@@ -33,8 +54,8 @@ keymap.set("n", "<A-k>", ":m .-2<CR>==", { noremap = true, silent = true })
 -- Move selected lines up
 keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
 
-keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 
 -- Move selected lines down
 keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
@@ -54,7 +75,7 @@ keymap.set("n", "<leader>Y", [["+Y]])
 keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 --
 ---- This is going to get me cancelled
-keymap.set("i", "<C-c>", "<Esc>")
+-- keymap.set("i", "<C-c>", "<Esc>")
 --
 keymap.set("n", "Q", "<nop>")
 keymap.set("n", "<leader>f", vim.lsp.buf.format)
