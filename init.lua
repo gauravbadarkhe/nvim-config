@@ -16,6 +16,26 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
+vim.api.nvim_create_augroup("SubstituteHighlight", { clear = true })
+
+-- Highlight search matches when using substitute
+vim.api.nvim_create_autocmd("CmdlineEnter", {
+  group = "SubstituteHighlight",
+  pattern = { "/", "?", ":s" },
+  callback = function()
+    vim.opt.hlsearch = true
+  end,
+})
+
+-- Disable search highlight after leaving substitute or search
+vim.api.nvim_create_autocmd("CmdlineLeave", {
+  group = "SubstituteHighlight",
+  pattern = { "/", "?", ":s" },
+  callback = function()
+    vim.opt.hlsearch = false
+  end,
+})
+
 vim.api.nvim_create_autocmd("InsertEnter", {
   desc = "Change cursor shape in insert mode",
   callback = function()
@@ -56,4 +76,15 @@ vim.api.nvim_create_autocmd("CmdlineLeave", {
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
   pattern = "*.ejs",
   command = "set filetype=html",
+})
+
+local ts_builtin = require("telescope.builtin")
+
+vim.api.nvim_set_keymap("n", "<leader>sf", "", {
+  noremap = true,
+  callback = function()
+    ts_builtin.treesitter({
+      symbols = { "function" },
+    })
+  end,
 })

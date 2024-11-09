@@ -48,6 +48,17 @@ return {
         "vimdoc",
         "c",
       },
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+          keymaps = {
+            -- Jump between functions
+            ["af"] = "@function.outer",
+            ["if"] = "@function.inner",
+          },
+        },
+      },
       incremental_selection = {
         enable = true,
         keymaps = {
@@ -58,6 +69,7 @@ return {
         },
       },
     })
+
     vim.treesitter.language.register("html", "ejs")
     vim.treesitter.language.register("javascript", "ejs")
   end,

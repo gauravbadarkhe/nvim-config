@@ -33,7 +33,7 @@ return {
         layout_config = {
           prompt_position = "top",
         },
-        file_ignore_patterns = { ".*~" }, -- Ignore files with ~
+        file_ignore_patterns = { ".*~", "%.min.js", "%.min.css" }, -- Ignore files with ~
         generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
         path_display = { "truncate" },
         winblend = 0,
@@ -74,6 +74,11 @@ return {
           },
         },
       },
+      treesitter = {
+        require("telescope.themes").get_dropdown({
+          layout_config = { height = 15 }, -- Adjust as needed
+        }),
+      },
       mappings = {
         i = {
           ["<C-k>"] = actions.move_selection_previous, -- move to prev result
@@ -96,7 +101,7 @@ return {
     })
     telescope.load_extension("file_browser")
     telescope.load_extension("fzf")
-
+    -- telescope.load_extension("treesitter")
     -- Set keymaps for Telescope commands
     local keymap = vim.keymap -- for conciseness
 
@@ -116,7 +121,10 @@ return {
     keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
     keymap.set("n", "<leader>fb", "<cmd>Telescope git_branches<cr>", { desc = "Switch Branches in current cwd" })
 
-    -- Function to open Telescope file browser in a floating window
+    -- vim.api.nvim_set_keymap("n", "<leader>sf", ":Telescope treesitter<CR>", { noremap = true })
+    -- vim.api.nvim_set_keymap("n", "<leader>sm", ":Telescope treesitter query=@method.outer<CR>", { noremap = true })
+    --
+    -- -- Function to open Telescope file browser in a floating window
     local function open_telescope_file_browser()
       require("telescope").extensions.file_browser.file_browser({
         cwd = vim.fn.getcwd(),

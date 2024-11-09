@@ -5,30 +5,8 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "folke/neodev.nvim", opts = {} },
-    -- main one
-    { "ms-jpq/coq_nvim", branch = "coq" },
-
-    -- 9000+ Snippets
-    { "ms-jpq/coq.artifacts", branch = "artifacts" },
-
-    -- lua & third party sources -- See https://github.com/ms-jpq/coq.thirdparty
-    -- Need to **configure separately**
-    { "ms-jpq/coq.thirdparty", branch = "3p" },
-    -- - shell repl
-    -- - nvim lua api
-    -- - scientific calculator
-    -- - comment banner
-    -- - etc
   },
-  init = function()
-    vim.g.coq_settings = {
-      auto_start = true, -- if you want to start COQ at startup
-      -- Your COQ settings here
-      keymap = {
-        recommended = false, -- Disable COQ's default key mappings
-      },
-    }
-  end,
+  init = function() end,
   config = function()
     -- import lspconfig plugin
     local lspconfig = require("lspconfig")
