@@ -54,17 +54,26 @@ return {
       }),
       -- sources for autocompletion
       sources = cmp.config.sources({
-        { name = "nvim_lsp" },
-        { name = "luasnip" }, -- snippets
-        { name = "buffer" }, -- text within current buffer
-        { name = "path" }, -- file system paths
+        { name = "copilot", priority = 1000 }, -- High priority for Copilot
+        { name = "nvim_lsp", priority = 900 }, -- LSP with slightly lower priority
+        { name = "luasnip" }, -- Snippets
+        { name = "buffer" }, -- Text within buffer
+        { name = "path" }, -- File system paths
       }),
-
       -- configure lspkind for vs-code like pictograms in completion menu
       formatting = {
-        format = lspkind.cmp_format({
+        fields = { "abbr", "kind", "menu" }, -- Define the order of fields shown
+        expandable_indicator = true, -- Show an indicator for expandable items
+        format = require("lspkind").cmp_format({
           maxwidth = 50,
           ellipsis_char = "...",
+          with_text = true,
+          menu = {
+            copilot = "[Copilot]",
+            nvim_lsp = "[LSP]",
+            buffer = "[Buffer]",
+            path = "[Path]",
+          },
         }),
       },
     })

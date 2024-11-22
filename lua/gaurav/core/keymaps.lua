@@ -2,6 +2,9 @@ vim.g.mapleader = " "
 
 local keymap = vim.keymap -- for concisensess
 
+-- Switch between two latest files
+keymap.set("n", "<leader><leader>", "<c-^>", { desc = "switch between two latest files" })
+
 -- Keybinding to source init.lua
 keymap.set("n", "<C-l>", ":source ~/.config/nvim/init.lua<CR>", { noremap = true, silent = true })
 
@@ -21,7 +24,9 @@ vim.api.nvim_set_keymap("v", "<C-h>", "<C-w>h", { noremap = true, silent = true 
 vim.api.nvim_set_keymap("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<C-j>", "<C-w>j", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<C-l>", "<C-w>l", { noremap = true, silent = true }) -- increment / decrement numbers
+vim.api.nvim_set_keymap("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
+
+-- increment / decrement numbers
 
 keymap.set("n", "<leader>+", "<c-a>", { desc = "increment number" })
 keymap.set("n", "<leader>-", "<c-x>", { desc = "decrement number" })
@@ -83,7 +88,28 @@ keymap.set("n", "<leader>f", vim.lsp.buf.format)
 keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 
 keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+
 -- Map <leader>xx to make the current file executable
 keymap.set("n", "<leader>cx", "<cmd>!chmod +x %<CR>", { silent = true })
 
 keymap.set("n", "<C-d>", "<cmd>:bd<CR>")
+
+-- Markers
+
+-- 1. Mark the current line globally within a file (limited to current project) with leader ma
+keymap.set("n", "<leader>ma", "mA", { desc = 'Mark current line globally as "A"' })
+
+-- 2. Traverse marks using Telescope within the current project (marks in the current workspace)
+-- This assumes you have `Telescope` and `telescope-project.nvim` installed for project support
+keymap.set("n", "<leader>mf", function()
+  require("telescope.builtin").marks()
+end, { desc = "Show and navigate marks using Telescope within the project" })
+
+-- 3. Traverse to the previous mark within the current project with leader mp
+keymap.set("n", "<leader>mp", "g;", { desc = "Jump to previous mark in current project" })
+
+-- 4. Traverse to the next mark within the current project with leader mn
+keymap.set("n", "<leader>mn", "g,", { desc = "Jump to next mark in current project" })
+
+-- 5. Remove the mark within the current project using leader mr
+keymap.set("n", "<leader>mr", ":delmarks A<cr>", { desc = 'Remove global mark "A" in current project' })
