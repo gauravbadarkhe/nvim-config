@@ -1,3 +1,5 @@
+local start_time = vim.loop.hrtime() -- Record the start time
+
 require("gaurav.core")
 require("gaurav.lazy")
 
@@ -87,4 +89,30 @@ vim.api.nvim_set_keymap("n", "<leader>sf", "", {
       symbols = { "function" },
     })
   end,
+})
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  once = true, -- Ensure it only runs once
+  callback = function()
+    local end_time = vim.loop.hrtime() -- Record the end time
+    local elapsed_ms = (end_time - start_time) / 1e6 -- Convert from nanoseconds to milliseconds
+    local message = string.format("🚀 Neovim fully loaded in %.2f ms ⚡", elapsed_ms)
+
+    -- Show the message in the command line
+    vim.api.nvim_echo({ { message, "None" } }, false, {})
+
+    -- Clear the message after 3 seconds
+    vim.defer_fn(function()
+      vim.api.nvim_command("echo ''")
+    end, 3000) -- 3000 ms = 3 seconds
+  end,
+})
+
+vim.diagnostic.config({
+  float = {
+    focusable = true, -- Allows focusing and scrolling the floating window
+    border = "rounded", -- Rounded borders for better visibility
+    source = "if_many", -- Show the source of diagnostics
+    scope = "cursor", -- Show diagnostics for the current cursor
+  },
 })

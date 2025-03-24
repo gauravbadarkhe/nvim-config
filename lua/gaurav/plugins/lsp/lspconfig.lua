@@ -76,6 +76,15 @@ return {
       end,
     })
 
+    vim.api.nvim_create_autocmd("LspAttach", {
+      group = vim.api.nvim_create_augroup("UserLspInlayHints", {}),
+      callback = function(ev)
+        if vim.lsp.buf.inlay_hint then
+          vim.lsp.buf.inlay_hint(ev.buf, true)
+        end
+      end,
+    })
+
     -- used to enable autocompletion (assign to every lsp server config)
     local capabilities = cmp_nvim_lsp.default_capabilities()
 
@@ -93,7 +102,61 @@ return {
         lspconfig[server_name].setup({
           capabilities = capabilities,
         })
-      end, 
+      end,
+      ["tsserver"] = function()
+        lspconfig["tsserver"].setup({
+          capabilities = capabilities,
+          settings = {
+            javascript = {
+              inlayHints = {
+                includeInlayParameterNameHints = "all", -- Options: "none" | "literals" | "all"
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
+            typescript = {
+              inlayHints = {
+                includeInlayParameterNameHints = "all",
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
+          },
+        })
+      end,
+      ["gopls"] = function()
+        lspconfig["gopls"].setup({
+          cmd = { "gopls" },
+          filetypes = { "go", "gomod" },
+          root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
+          settings = {
+            gopls = {
+              analyses = {
+                unusedparams = true, -- Highlight unused parameters
+              },
+              staticcheck = true, -- Enable static analysis
+            },
+          },
+          on_attach = function(client, bufnr)
+            -- Keybindings for LSP actions
+            local opts = { noremap = true, silent = true }
+            local bufmap = vim.api.nvim_buf_set_keymap
+            bufmap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts) -- Go to definition
+            bufmap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts) -- Hover documentation
+            bufmap(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts) -- Go to implementation
+            bufmap(bufnr, "n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts) -- Rename symbol
+            bufmap(bufnr, "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts) -- Code action
+          end,
+        })
+      end,
       ["lua_ls"] = function()
         -- configure lua server (with special settings)
         lspconfig["lua_ls"].setup({

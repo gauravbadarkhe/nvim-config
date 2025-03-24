@@ -32,6 +32,7 @@ return {
         "tailwindcss",
         "lua_ls",
         "emmet_ls",
+        "gopls",
       },
     })
 

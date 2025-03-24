@@ -16,6 +16,9 @@ vim.api.nvim_set_keymap("n", "<Space>lf", "<cmd>lua vim.lsp.buf.format()<CR>", {
 
 -- Switch between panes
 
+-- Show errors in floating window
+vim.api.nvim_set_keymap("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", { noremap = true, silent = true })
+
 -- Remap <C-h> for window navigation
 
 vim.api.nvim_set_keymap("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
@@ -113,3 +116,18 @@ keymap.set("n", "<leader>mn", "g,", { desc = "Jump to next mark in current proje
 
 -- 5. Remove the mark within the current project using leader mr
 keymap.set("n", "<leader>mr", ":delmarks A<cr>", { desc = 'Remove global mark "A" in current project' })
+
+vim.keymap.set("n", "<leader>FS", function()
+  vim.ui.input({ prompt = "Enter file type (e.g., *.js, *.py): " }, function(file_type)
+    if file_type then
+      require("telescope.builtin").live_grep({
+        glob_pattern = file_type,
+      })
+    end
+  end)
+end, { desc = "Live grep with file type" })
+
+-- -- Define :W to save without formatting
+-- vim.api.nvim_create_user_command("W", function()
+--   vim.api.nvim_command("noautocmd w") -- Save without triggering autocommands
+-- end, { desc = "Save without formatting" })

@@ -1,4 +1,10 @@
 return {
   "stevearc/dressing.nvim",
-  event = "VeryLazy",
+  opts = {
+    input = {
+      default_prompt = "> ",
+      anchor = "CENTER", -- Position the input in the middle of the screen
+      border = "rounded", -- Rounded border for input window
+    },
+  },
 }

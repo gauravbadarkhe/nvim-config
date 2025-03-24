@@ -57,7 +57,12 @@ return {
       sections = {
         lualine_a = { "mode" },
         lualine_b = { "branch", "diff" },
-        lualine_c = {},
+        lualine_c = {
+          -- Custom buffer count component
+          function()
+            return string.format("#Buf: %d", #vim.api.nvim_list_bufs())
+          end,
+        },
         lualine_x = {
           { "diagnostics", sources = { "nvim_lsp" }, sections = { "hint" } },
         },

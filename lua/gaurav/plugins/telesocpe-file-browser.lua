@@ -33,7 +33,7 @@ return {
         layout_config = {
           prompt_position = "top",
         },
-        file_ignore_patterns = { ".*~", "%.min.js", "%.min.css" }, -- Ignore files with ~
+        file_ignore_patterns = { ".*~", "%.min.js", "%.min.css", "%.log", ".env" }, -- Ignore files with ~
         generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
         path_display = { "truncate" },
         winblend = 0,

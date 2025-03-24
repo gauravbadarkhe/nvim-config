@@ -21,6 +21,19 @@ return {
     vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "none" })
   end,
 }
+
+-- return {
+--   "rose-pine/neovim",
+--   name = "rose-pine",
+--   priority = 1000, -- Load early
+--   config = function()
+--     require("rose-pine").setup({
+--       variant = "dawn", -- Use the light variant
+--       disable_background = false, -- Keep background visible
+--     })
+--     vim.cmd.colorscheme("rose-pine")
+--   end,
+-- }
 -- return {
 --   {
 --     "folke/tokyonight.nvim",
