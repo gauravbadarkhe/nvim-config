@@ -5,10 +5,11 @@ return {
   opts = {},
   config = function()
     require("catppuccin").setup({
+      -- flavour = "latte", -- Use the light version
       transparent_background = true, -- Enable transparency
     })
 
-    vim.cmd.colorscheme("catppuccin-mocha")
+    vim.cmd.colorscheme("catppuccin-latte")
 
     vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
     vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
